@@ -9,7 +9,6 @@
  */
 namespace NicMart\DGIM\Test;
 
-use NicMart\DGIM\Bucket;
 use NicMart\DGIM\BucketSequence;
 
 /**
@@ -60,5 +59,46 @@ class BucketSequenceTest extends \PHPUnit_Framework_TestCase
         $sequence->removeEarliestBucket();
 
         $this->assertTrue($sequence->isEmpty());
+    }
+
+    public function testCount()
+    {
+        $sequence = new BucketSequence(10);
+
+        // 3:1 1:2
+        $sequence
+            ->input(1)
+            ->input(1)
+            ->input(0)
+            ->input(1)
+            ->input(0)
+            ->input(0)  //timestamp 5
+        ;
+
+        $this->assertSame(0, $sequence->getCount(1));
+        $this->assertSame(0, $sequence->getCount(2));
+        $this->assertSame(1, $sequence->getCount(3));
+        $this->assertSame(1, $sequence->getCount(4));
+        $this->assertSame(2, $sequence->getCount(5));
+
+                // 1:1 9:2 7:2
+        $sequence
+            ->input(0)  //6
+            ->input(1)  //7
+            ->input(1)  //8
+            ->input(1)  //9
+            ->input(0)  //0
+            ->input(1)  //1
+        ;
+
+        $this->assertSame(1, $sequence->getCount(1));
+        $this->assertSame(1, $sequence->getCount(2));
+        $this->assertSame(2, $sequence->getCount(3));
+        $this->assertSame(2, $sequence->getCount(4));
+        $this->assertSame(4, $sequence->getCount(5));
+        $this->assertSame(4, $sequence->getCount(6));
+        $this->assertSame(4, $sequence->getCount(7));
+        $this->assertSame(4, $sequence->getCount(8));
+        $this->assertSame(4, $sequence->getCount(9));
     }
 }

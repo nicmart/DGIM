@@ -37,7 +37,7 @@ class BucketSequence
      * It will be stored modulo windowSize
      * @var int
      */
-    private $timestamp = 0;
+    private $timestamp = -1;
 
     /**
      * @param int $windowSize
@@ -97,6 +97,8 @@ class BucketSequence
      */
     public function input($bit)
     {
+        $this->timestamp = ($this->timestamp + 1) % $this->windowSize;
+
         if ($this->isEarliestBucketStale()) {
             $this->removeEarliestBucket();
         }
@@ -106,9 +108,77 @@ class BucketSequence
             $this->condensateBuckets();
         }
 
-        $this->timestamp = ($this->timestamp + 1) % $this->windowSize;
-
         return $this;
+    }
+
+    /**
+     * Returns an estimate for the number of 1s in the last k entries
+     *
+     * @param $k
+     *
+     * @return float|int|number
+     */
+    public function getCount($k)
+    {
+        $bucket = $this->findFirstEarliestBucketIntersectingInterval($k);
+        $count = 0;
+
+        if (!$bucket) {
+            return $count;
+        }
+
+        $count += ceil(pow($this->base, $bucket->getExponent()) / 2);
+
+        while ($bucket = $bucket->getPrev()) {
+            $count += pow($this->base, $bucket->getExponent());
+        }
+
+        return (int) $count;
+    }
+
+    /**
+     * @param int $intervalSize
+     * @return Bucket|null
+     */
+    private function findFirstEarliestBucketIntersectingInterval($intervalSize)
+    {
+        $bucket = $this->earliestBucket;
+
+        while ($bucket) {
+            if ($this->getTimeIntervalFromNow($bucket->getTimestamp()) < $intervalSize) {
+                return $bucket;
+            }
+            $bucket = $bucket->getPrev();
+        }
+
+        return null;
+    }
+
+    /**
+     * Given a moduled $timestamp, return the distance between
+     * that timestamp and the current timestamp
+     * @param $k
+     * @return int
+     */
+    private function getTimeIntervalFromNow($k)
+    {
+        return $this->positiveModule($this->timestamp - $k, $this->windowSize);
+    }
+
+    /**
+     * @param int $n
+     * @param int $m
+     * @return int
+     */
+    private function positiveModule($n, $m)
+    {
+        $r = $n % $m;
+
+        if ($r < 0) {
+            $r = $r + $m;
+        }
+
+        return $r;
     }
 
     /**
