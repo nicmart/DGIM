@@ -101,4 +101,61 @@ class BucketSequenceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(4, $sequence->getCount(8));
         $this->assertSame(4, $sequence->getCount(9));
     }
+
+    public function testRandomSequence()
+    {
+        $a = $this->randomAry(10000, 100, 33);
+
+        //$a = array_fill(0, 500, 0);
+        //$a[499 - 15] = 1;
+
+        $sequence = new BucketSequence(10000);
+
+        foreach ($a as $v) {
+            $sequence->input($v);
+        }
+
+        echo (string) $sequence;
+
+        $errors = array();
+        for ($n = 1; $n < 1000; $n += 1) {
+            $expected = $sequence->getCount($n);
+            $real = $this->numOfOnes($a, $n);
+            $error = $real ? round((abs($real - $expected) / $real) * 100) : 0;
+            $errors[] = $error;
+            if ($error < 30) continue;
+            echo "N: " . $n . PHP_EOL;
+            echo "Predicted: " . $expected . PHP_EOL;
+            echo "Real: " . $real . PHP_EOL;
+            echo "Error: $error%" . PHP_EOL;
+        }
+        echo "Average Error: " . array_sum($errors) / count($errors);
+
+        $this->assertTrue(true);
+    }
+
+    private function randomAry($n, $randomSize, $threshold)
+    {
+        $a = array();
+
+        for ($i = 0; $i < $n; $i++) {
+            $a[$i] = rand(1, $randomSize) <= $threshold;
+        }
+
+        return $a;
+    }
+
+    private function numOfOnes($a, $k)
+    {
+        $count = 0;
+        $size = count($a);
+
+        for ($i = $size - 1; $i > $size - $k; $i--) {
+            if ($a[$i]) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
 }
