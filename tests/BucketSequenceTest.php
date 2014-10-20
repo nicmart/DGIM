@@ -109,7 +109,7 @@ class BucketSequenceTest extends \PHPUnit_Framework_TestCase
         //$a = array_fill(0, 500, 0);
         //$a[499 - 15] = 1;
 
-        $sequence = new BucketSequence(10000);
+        $sequence = new BucketSequence(10000, 20, 3);
 
         foreach ($a as $v) {
             $sequence->input($v);
@@ -123,7 +123,7 @@ class BucketSequenceTest extends \PHPUnit_Framework_TestCase
             $real = $this->numOfOnes($a, $n);
             $error = $real ? round((abs($real - $expected) / $real) * 100) : 0;
             $errors[] = $error;
-            if ($error < 30) continue;
+           // if ($error < 30) continue;
             echo "N: " . $n . PHP_EOL;
             echo "Predicted: " . $expected . PHP_EOL;
             echo "Real: " . $real . PHP_EOL;

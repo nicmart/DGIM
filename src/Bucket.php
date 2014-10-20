@@ -9,6 +9,7 @@
  */
 
 namespace NicMart\DGIM;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class FirstClass
@@ -64,8 +65,16 @@ class Bucket
      *
      * @return Bucket
      */
-    public function getNext()
+    public function getNext($index = 1)
     {
+        if ($index > 1) {
+            $next = $this->getNext();
+            if (!$next) {
+                throw new \UnderflowException("The element has no successor");
+            }
+            return $next->getNext($index - 1);
+        }
+
         return $this->next;
     }
 
@@ -87,8 +96,16 @@ class Bucket
      *
      * @return Bucket
      */
-    public function getPrev()
+    public function getPrev($index = 1)
     {
+        if ($index > 1) {
+            $prev = $this->getPrev();
+            if (!$prev) {
+                throw new \UnderflowException("The element has no previous elements");
+            }
+            return $prev->getPrev($index - 1);
+        }
+
         return $this->prev;
     }
 

@@ -39,14 +39,17 @@ class BucketSequence
      */
     private $timestamp = -1;
 
+    private $maxForSameSize;
+
     /**
      * @param int $windowSize
      * @param int $base
      */
-    public function __construct($windowSize, $base = 2)
+    public function __construct($windowSize, $maxForSameSize = 2, $base = 2)
     {
         $this->windowSize = $windowSize;
         $this->base = $base;
+        $this->maxForSameSize = $maxForSameSize;
     }
 
     /**
@@ -220,13 +223,17 @@ class BucketSequence
 
             $sameExpCount++;
 
-            if ($sameExpCount > $this->base) {
+            if ($sameExpCount > $this->maxForSameSize) {
                 $newBucket = new Bucket(
-                    $latestBucketForCurrExp->getNext()->getTimestamp(),
-                    $latestBucketForCurrExp->getExponent() + 1
+                    $currentBucket->getPrev()->getTimestamp(),
+                    $currentBucket->getExponent() + 1
                 );
 
-                $this->replaceSlice($currentBucket, $latestBucketForCurrExp->getNext(), $newBucket);
+                $this->replaceSlice(
+                    $currentBucket,
+                    $currentBucket->getPrev($this->base - 1),
+                    $newBucket
+                );
 
                 $currentBucket = $latestBucketForCurrExp = $newBucket;
                 $sameExpCount = 1;
