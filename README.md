@@ -1,13 +1,13 @@
 # The Datar-Gionis-Indyk-Motwani algorithm
-Given a stream of bits and a window size `N`, we want be able to answer to the question
+Given a stream of bits and a window size N, we want be able to answer to the question
 
-**How many 1s appeared in the last `k` bits?**
+**How many 1s appeared in the last k bits?**
 
 Of course the answer is very simple if we are able to store in memory all last N bits.
 If it's not the case, we have to use a smarter way to store the data.
 
-The DGIM algorithm allows us to answer the question with a logarithmic amount
-of memory, and with tunable precision.
+The DGIM algorithm allows us to answer the question with a **logarithmic amount
+of memory**, and with tunable precision.
 
 More precisely, for a given precision 1/m, the needed amount of memory is O(m log(N)²). 
 
@@ -52,6 +52,23 @@ for ($i = 0; $i < 100000; $i++) {
 $sumOfLast1000 = $counter->getCount(1000);
 $sumOfLast10000 = $counter->getCount(10000);
 ```
+
+## Command line example
+You can test the precision of the library on randomly generated data using the `examples/example.php` file:
+```
+php example.php           
+Test example to check the precision of the algorithm compared to real data.
+Usage: php example.php windowsize maxint precision.
+Example: php example.php 1000 100 0.1
+```
+
+## References
+You can find a detailed description of the algorithm in section 4.6.2 of the wonderful 
+book [Mining of Massive Datasets](http://www.mmds.org), freely available in PDF format.
+
+## Technical notes
+Each bucket stores the timestamp and the exponent as php integers. The most memory efficient implementation
+should only stores log(N) bits for the timestamp and log(log(N)) bits for the exponent.
 
 ## Install
 
