@@ -1,7 +1,7 @@
 # The Datar-Gionis-Indyk-Motwani algorithm
 
-[![Build Status](https://travis-ci.org/nicmart/dgim.png?branch=master)](https://travis-ci.org/nicmart/dgim)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/nicmart/dgim/badges/quality-score.png?s=e06818508807c109a8c9354a73fc1a5227426c09)](https://scrutinizer-ci.com/g/nicmart/StringTemplate/)
+[![Build Status](https://travis-ci.org/nicmart/DGIM.svg?branch=master)](https://travis-ci.org/nicmart/DGIM)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nicmart/DGIM/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/nicmart/DGIM/?branch=master)
 
 Given a stream of bits and a window size N, we want be able to answer to the question
 
