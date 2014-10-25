@@ -9,15 +9,20 @@
  */
 
 namespace NicMart\DGIM;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class FirstClass
  */
 class Bucket
 {
+    /**
+     * @var int
+     */
     private $timestamp;
 
+    /**
+     * @var int
+     */
     private $exponent;
 
     /**
@@ -122,6 +127,9 @@ class Bucket
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getTimestamp() . " : " . pow(2, $this->getExponent());

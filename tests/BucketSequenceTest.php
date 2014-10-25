@@ -104,17 +104,15 @@ class BucketSequenceTest extends \PHPUnit_Framework_TestCase
 
     public function testRandomSequence()
     {
-        $a = $this->randomAry(10000, 100, 33);
+        //$a = $this->randomAry(10000, 100, 33);
 
         //$a = array_fill(0, 500, 0);
         //$a[499 - 15] = 1;
-
-        $sequence = new BucketSequence(10000, 20, 3);
-
-        foreach ($a as $v) {
-            $sequence->input($v);
-        }
-
+        return;
+        $size = 500000;
+        //$ary = new \SplFixedArray($size);return;
+        $sequence = $this->randomSequence($size, 21, 100, 25);
+return;
         echo (string) $sequence;
 
         $errors = array();
@@ -143,6 +141,17 @@ class BucketSequenceTest extends \PHPUnit_Framework_TestCase
         }
 
         return $a;
+    }
+
+    private function randomSequence($n, $max, $randomSize, $threshold)
+    {
+        $sequence = new BucketSequence($n, $max);
+
+        for ($i = 0; $i < $n; $i++) {
+            $sequence->input(rand(1, $randomSize) <= $threshold);
+        }
+
+        return $sequence;
     }
 
     private function numOfOnes($a, $k)

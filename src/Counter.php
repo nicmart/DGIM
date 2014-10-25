@@ -10,19 +10,50 @@
 
 namespace NicMart\DGIM;
 
-
-class WindowCounter
+/**
+ * Class Counter
+ * @package NicMart\DGIM
+ */
+class Counter
 {
+    /**
+     * @var int
+     */
     private $windowSize;
 
+    /**
+     * @var int
+     */
     private $currentTime;
+
+    /**
+     * @var int
+     */
+    private $maxInteger;
+
+    /**
+     * @var int
+     */
+    private $bits;
+
+    /**
+     * @var BucketSequence[]
+     */
+    private $sequences = array();
+
     /**
      * @param $windowSize
      */
-    public function __construct($windowSize)
+    public function __construct($windowSize, $maxInteger = 1, $maxForSameSize = 2)
     {
         $this->windowSize = $windowSize;
+        $this->maxInteger = $maxInteger;
+        $this->bits = (int) floor(log($maxInteger, 2)) + 1;
         $this->currentTime = 0;
+
+        for ($i = 0; $i < $this->bits; $i++) {
+            $this->sequences[] = new BucketSequence($windowSize, $maxForSameSize);
+        }
     }
 
     /**
@@ -35,10 +66,37 @@ class WindowCounter
         return $this->windowSize;
     }
 
-    public function input($bit)
+    /**
+     * @param int $n
+     * @return $this
+     */
+    public function input($n)
     {
+        if ($n > $this->maxInteger) {
+            throw new \OutOfBoundsException("The maximum integer supported is {$this->maxInteger}");
+        }
 
+        $binary = str_pad(decbin($n), $this->bits, "0", STR_PAD_LEFT);
 
-        $this->currentTime = ($this->currentTime + 1) % $this->windowSize;
+        foreach ($this->sequences as $exponent => $sequence) {
+            $sequence->input($binary[$this->bits - $exponent - 1]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param int $k
+     * @return int
+     */
+    public function getCount($k)
+    {
+        $count = 0;
+
+        foreach ($this->sequences as $index => $sequence) {
+            $count += pow(2, $index) * $sequence->getCount($k);
+        }
+
+        return $count;
     }
 }

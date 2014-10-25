@@ -40,7 +40,6 @@ class BucketSequence
     private $timestamp = -1;
 
     private $maxForSameSize;
-
     /**
      * @param int $windowSize
      * @param int $base
