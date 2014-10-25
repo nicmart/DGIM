@@ -1,5 +1,8 @@
-# DGIM
-Implementation of the DGIM algorithm to count a stream of ones in a window.
+# The Datar-Gionis-Indyk-Motwani algorithm
+Given a stream of bits and a window size `N`, we want be able to answer to the question
+
+How many 1s appeared in the last `k` bits? 
+
 
 ## Install
 
