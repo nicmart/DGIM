@@ -17,37 +17,6 @@ use NicMart\DGIM\Counter;
 
 class CounterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testWithMultipleBits()
-    {
-        $memory = memory_get_usage();
-        new BucketSequence(10, 2, 2);
-        $bucket = new Bucket(1, 23);
-        //$bucket2 = new Bucket(123232, 23);
-        //$bucket3 = new Bucket(123232, 23);
-        $m2 = memory_get_usage();
-        var_dump("memory: " . ($m2 - $memory - 48) . "B");
-        return;
-        $size = 10000;
-        list($ary, $counter) = $this->randomCounterAndAry($size, 1000, 101);
-
-        $errors = array();
-        for ($n = 1; $n < $size; $n = max($n+1, (int) ($n * 1.5))) {
-            $expected = $counter->getCount($n);
-            $real = array_sum(array_slice($ary, -$n));
-            $error = $real ? round((abs($real - $expected) / $real) * 100) : 0;
-            $errors[] = $error;
-           // if ($error < 30) continue;
-            echo "N: " . $n . PHP_EOL;
-            echo "Predicted: " . $expected . PHP_EOL;
-            echo "Real: " . $real . PHP_EOL;
-            echo "Error: $error%" . PHP_EOL;
-        }
-        echo "Average Error: " . array_sum($errors) / count($errors) . PHP_EOL;
-        echo "Max Error: " . max($errors);
-
-        $this->assertTrue(true);
-    }
-
     public function testCount()
     {
         $counter = new Counter(7, 3);
@@ -69,20 +38,6 @@ class CounterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(6, $counter->getCount(5));
         $this->assertSame(6, $counter->getCount(6));
         $this->assertSame(6, $counter->getCount(7));
-    }
-
-    private function randomCounterAndAry($windowSize, $maxInt, $maxForSameSize)
-    {
-        $counter = new Counter($windowSize, $maxInt, $maxForSameSize);
-        $ary = [];
-
-        for ($i = 0; $i < $windowSize; $i++) {
-            $rand = rand(0, $maxInt);
-            $ary[] = $rand;
-            $counter->input($rand);
-        }
-
-        return [$ary, $counter];
     }
 }
  
