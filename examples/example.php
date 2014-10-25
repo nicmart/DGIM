@@ -37,7 +37,16 @@ for ($n = 1; $n < $size; $n = max($n+1, (int) ($n * 1.5))) {
     echo "Error: $error%" . PHP_EOL;
     echo str_repeat("-", 20) . PHP_EOL;
 }
-echo "Average Error: " . array_sum($errors) / count($errors) . PHP_EOL;
+$avgError = array_sum($errors) / count($errors);
+
+$variance = 0;
+foreach ($errors as $error) {
+    $variance += pow($error - $avgError, 2);
+}
+$variance = sqrt($variance);
+
+echo "Average Error: " . $avgError . PHP_EOL;
+echo "Variance of Error: " . $variance . PHP_EOL;
 echo "Max Error: " . max($errors);
 
 
