@@ -11,7 +11,9 @@
 namespace NicMart\DGIM;
 
 /**
- * Class FirstClass
+ * Class Bucket
+ *
+ * A double linked list node with information for the timestamp and the current exponent
  */
 class Bucket
 {
@@ -68,16 +70,17 @@ class Bucket
     /**
      * Get Next
      *
+     * @param int $index
      * @return Bucket
      */
     public function getNext($index = 1)
     {
         if ($index > 1) {
             $next = $this->getNext();
-            if (!$next) {
-                throw new \UnderflowException("The element has no successor");
-            }
-            return $next->getNext($index - 1);
+            return $next
+                ? $next->getNext($index - 1)
+                : null
+            ;
         }
 
         return $this->next;
@@ -88,27 +91,34 @@ class Bucket
      *
      * @param Bucket $next
      *
+     * @param bool $synchronized
      * @return Bucket The current instance
      */
-    public function setNext(Bucket $next = null)
+    public function setNext(Bucket $next = null, $synchronized = true)
     {
         $this->next = $next;
+
+        if ($next && $synchronized) {
+            $next->setPrev($this, false);
+        }
+
         return $this;
     }
 
     /**
      * Get Prev
      *
+     * @param int $index
      * @return Bucket
      */
     public function getPrev($index = 1)
     {
         if ($index > 1) {
             $prev = $this->getPrev();
-            if (!$prev) {
-                throw new \UnderflowException("The element has no previous elements");
-            }
-            return $prev->getPrev($index - 1);
+            return $prev
+                ? $prev->getPrev($index - 1)
+                : null
+            ;
         }
 
         return $this->prev;
@@ -119,11 +129,17 @@ class Bucket
      *
      * @param Bucket $prev
      *
+     * @param bool $synchronized
      * @return Bucket The current instance
      */
-    public function setPrev(Bucket $prev = null)
+    public function setPrev(Bucket $prev = null, $synchronized = true)
     {
         $this->prev = $prev;
+
+        if ($prev && $synchronized) {
+            $prev->setNext($this, false);
+        }
+
         return $this;
     }
 

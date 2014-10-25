@@ -25,7 +25,7 @@ class BucketSequence
     /**
      * @var int
      */
-    private $base;
+    private $base = 2;
 
     /**
      * @var int
@@ -39,15 +39,19 @@ class BucketSequence
      */
     private $timestamp = -1;
 
+    /**
+     * @var int
+     */
     private $maxForSameSize;
+
     /**
      * @param int $windowSize
-     * @param int $base
+     * @param int $maxForSameSize
+     * @internal param int $base
      */
-    public function __construct($windowSize, $maxForSameSize = 2, $base = 2)
+    public function __construct($windowSize, $maxForSameSize = 2)
     {
         $this->windowSize = $windowSize;
-        $this->base = $base;
         $this->maxForSameSize = $maxForSameSize;
     }
 
@@ -195,7 +199,6 @@ class BucketSequence
         }
 
         $bucket->setNext($this->lastBucket);
-        $this->lastBucket->setPrev($bucket);
         $this->lastBucket = $bucket;
 
         return $this;
@@ -250,15 +253,10 @@ class BucketSequence
      */
     private function replaceSlice(Bucket $earliest, Bucket $latest, Bucket $replace)
     {
-        if ($next = $earliest->getNext()) {
-            $next->setPrev($replace);
-        }
-        $replace->setNext($next);
-
-        if ($prev = $latest->getPrev()) {
-            $prev->setNext($replace);
-        }
-        $replace->setPrev($prev);
+        $replace
+            ->setNext($earliest->getNext())
+            ->setPrev($latest->getPrev())
+        ;
 
         if ($earliest === $this->getEarliestBucket()) {
             $this->earliestBucket = $replace;
