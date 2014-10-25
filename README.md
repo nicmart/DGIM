@@ -1,4 +1,8 @@
 # The Datar-Gionis-Indyk-Motwani algorithm
+
+[![Build Status](https://travis-ci.org/nicmart/dgim.png?branch=master)](https://travis-ci.org/nicmart/dgim)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/nicmart/dgim/badges/quality-score.png?s=e06818508807c109a8c9354a73fc1a5227426c09)](https://scrutinizer-ci.com/g/nicmart/StringTemplate/)
+
 Given a stream of bits and a window size N, we want be able to answer to the question
 
 **How many 1s appeared in the last k bits?**
@@ -9,9 +13,9 @@ If it's not the case, we have to use a smarter way to store the data.
 The DGIM algorithm allows us to answer the question with a **logarithmic amount
 of memory**, and with tunable precision.
 
-More precisely, for a given precision 1/m, the needed amount of memory is O(m log(N)²). 
+More precisely, for a given precision 1/m, the needed amount of memory is **O(m log(N)²)**. 
 
-Just to outline, log(N)² is a ridicously low number compared to N, for big N. For example, if N is 80 bilions,
+Just to outline, log(N)² (base 2) is a ridicously low number compared to N, for big N. For example, if N is 80 bilions,
 log(N)² is 1311.
 
 In this library you can find a PHP implementation of the algorithm, together with the generalization
@@ -60,6 +64,21 @@ php example.php
 Test example to check the precision of the algorithm compared to real data.
 Usage: php example.php windowsize maxint precision.
 Example: php example.php 1000 100 0.1
+
+php example.php 3000 10 0.01
+...
+N: 1599
+Predicted: 7906
+Real: 7919
+Error: 0%
+--------------------
+N: 2398
+Predicted: 11982
+Real: 11988
+Error: 0%
+--------------------
+Average Error: 0
+Max Error: 0%
 ```
 
 ## References
