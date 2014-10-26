@@ -21,6 +21,16 @@ log(N)² is 1311.
 In this library you can find a PHP implementation of the algorithm, together with the generalization
 to streams of non negative integers. Yeah, PHP is not the proper tool for memory-intensive tasks,
  I've written this library mainly to experiment a bit with the concepts in DGIM.
+ 
+## How does it work?
+The main idea is to store "buckets" of bits, of an exponential increasing size.
+For each bucket we store only the timestamp of its latest one and the number of ones it contains.
+
+For more details you can check section 4.6.2 of the book [Mining of Massive Datasets](http://www.mmds.org), 
+freely available in PDF format.
+
+Here you can find a handwritten diagram that explain the behaviour of the algorithm for a window of 8 bits
+when asking the number of ones of the last 7 bits: 
 
 ## Counting 1s
 The only component the client need to use is the Counter class. This is the way to use it for counting ones with a max 1% error:
