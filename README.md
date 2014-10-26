@@ -19,18 +19,21 @@ Just to outline, log(N)² (base 2) is a ridicously low number compared to N, for
 log(N)² is 1311.
 
 In this library you can find a PHP implementation of the algorithm, together with the generalization
-to streams of non negative integers. Yeah, PHP is not the proper tool for memory-intensive tasks,
- I've written this library mainly to experiment a bit with the concepts in DGIM.
+to streams of non negative integers. Yeah, PHP is not the proper tool for memory-intensive tasks, I've written
+this mainly for experimental purposes.
  
 ## How does it work?
-The main idea is to store "buckets" of bits, of an exponential increasing size.
+The main idea is to store "buckets" of bits, with an exponential increasing size.
 For each bucket we store only the timestamp of its latest one and the number of ones it contains.
 
 For more details you can check section 4.6.2 of the book [Mining of Massive Datasets](http://www.mmds.org), 
 freely available in PDF format.
 
-Here you can find a handwritten diagram that explain the behaviour of the algorithm for a window of 8 bits
-when asking the number of ones of the last 7 bits: 
+Here you can find a sketch that explains the behaviour of the algorithm for a window of 8 bits
+when asking the number of ones of the last 7 bits. As you can see, when there are more than two buckets
+of the same size, the two oldest are condensed into a twice sized one. Timestamps are stored modulo N.
+
+![example](example.png)
 
 ## Counting 1s
 The only component the client need to use is the Counter class. This is the way to use it for counting ones with a max 1% error:
@@ -99,7 +102,7 @@ book [Mining of Massive Datasets](http://www.mmds.org), freely available in PDF 
 Each bucket stores the timestamp and the exponent as php integers. The most memory efficient implementation
 should only stores log(N) bits for the timestamp and log(log(N)) bits for the exponent.
 
-Also the bucket sequence is implemented as a double linked list, so it is taking space also for the bucket links.
+Furthermore, the bucket sequence is implemented as a double linked list, so it is taking space also for the bucket links.
 An array implementation of the sequence and a language that provides true array objects can avoid this.
 
 ## Install
