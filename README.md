@@ -35,6 +35,9 @@ of the same size, the two oldest are condensed into a twice sized one. Timestamp
 
 ![example](example.png)
 
+To calculate the sum of last K bits, we find the earliest bucket whose timestamp is in the k-window, we take an half of
+its value, and we sum to it the sizes of all the following buckets. 
+
 ## Counting 1s
 The only component the client need to use is the Counter class. This is the way to use it for counting ones with a max 1% error:
 ```php
