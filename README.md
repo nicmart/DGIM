@@ -89,6 +89,9 @@ book [Mining of Massive Datasets](http://www.mmds.org), freely available in PDF 
 Each bucket stores the timestamp and the exponent as php integers. The most memory efficient implementation
 should only stores log(N) bits for the timestamp and log(log(N)) bits for the exponent.
 
+Also the bucket sequence is implemented as a double linked list, so it is taking space also for the bucket links.
+An array implementation of the sequence and a language that provides true array objects can avoid this.
+
 ## Install
 
 The best way to install DGIM is [through composer](http://getcomposer.org).
