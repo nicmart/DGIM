@@ -3,12 +3,12 @@
 [![Build Status](https://travis-ci.org/nicmart/DGIM.svg?branch=master)](https://travis-ci.org/nicmart/DGIM)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nicmart/DGIM/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/nicmart/DGIM/?branch=master)
 
-Given a stream of bits and a window size N, we want be able to answer to the question
+Given a stream of bits and a window size N, we want be able to answer the question
 
 **How many 1s appeared in the last k bits?**
 
 Of course the answer is very simple if we are able to store in memory all last N bits.
-If it's not the case, we have to use a smarter way to store the data.
+If it's not the case, we have to use a smarter way to store and to query the data.
 
 The DGIM algorithm allows us to answer the question with a **logarithmic amount
 of memory**, and with tunable precision.
