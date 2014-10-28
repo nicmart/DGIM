@@ -83,18 +83,23 @@ Example: php example.php 1000 100 0.1
 
 php example.php 3000 10 0.01
 ...
-N: 1599
-Predicted: 7906
-Real: 7919
+N: 1066
+Predicted: 5405
+Real: 5405
 Error: 0%
+--------------------
+N: 1599
+Predicted: 8023
+Real: 8034
+Error: 0.14%
 --------------------
 N: 2398
-Predicted: 11982
-Real: 11988
-Error: 0%
+Predicted: 12079
+Real: 12108
+Error: 0.24%
 --------------------
-Average Error: 0
-Max Error: 0%
+Average Error: 0.042
+Max Error: 0.24
 ```
 
 ## References

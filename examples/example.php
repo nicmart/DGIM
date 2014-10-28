@@ -28,7 +28,7 @@ $errors = array();
 for ($n = 1; $n < $size; $n = max($n+1, (int) ($n * 1.5))) {
     $expected = $counter->getCount($n);
     $real = array_sum(array_slice($ary, -$n));
-    $error = $real ? round((abs($real - $expected) / $real) * 100) : 0;
+    $error = $real ? round((abs($real - $expected) / $real) * 100, 2) : 0;
     $errors[] = $error;
     // if ($error < 30) continue;
     echo "N: " . $n . PHP_EOL;
