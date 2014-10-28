@@ -126,7 +126,7 @@ class BucketSequence
      */
     public function getCount($k)
     {
-        $bucket = $this->findFirstEarliestBucketIntersectingInterval($k);
+        $bucket = $this->findEarliestBucketIntersectingInterval($k);
         $count = 0;
 
         if (!$bucket) {
@@ -146,7 +146,7 @@ class BucketSequence
      * @param int $intervalSize
      * @return Bucket|null
      */
-    private function findFirstEarliestBucketIntersectingInterval($intervalSize)
+    private function findEarliestBucketIntersectingInterval($intervalSize)
     {
         $bucket = $this->earliestBucket;
 
